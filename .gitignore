@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Data / vector store (keep dataset fetch scripts, not the data)
+backend/datasets/*
+!backend/datasets/README.md
+!backend/datasets/*.py
+chroma/
+*.sqlite3
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

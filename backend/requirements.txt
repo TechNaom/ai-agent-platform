@@ -1,0 +1,9 @@
+# Pinned versions added when the backend skeleton lands.
+fastapi
+uvicorn[standard]
+anthropic
+langfuse
+chromadb
+slowapi
+pydantic-settings
+python-dotenv
