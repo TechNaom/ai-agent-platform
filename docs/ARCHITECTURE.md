@@ -33,6 +33,15 @@ Each agent = a system prompt + a tool set, driven by a shared lightweight agent 
   - Cheap/fast paths (classification, routing, short answers): `claude-haiku-4-5`.
   - Hardest reasoning if needed: `claude-opus-4-8`.
   - Wrapped behind a thin model-selection layer so the provider/model is swappable.
+- **Low-cost provider option (cost control for the public demo).** The model-selection
+  layer is provider-abstracted so we can route to cheaper models when the public demo's
+  cost/abuse exposure warrants it — e.g. **OpenRouter** as a single gateway to Grok,
+  Llama, Mistral, and many open/hosted models, or a direct low-cost provider. Strategy:
+  keep Claude as the quality default for the showcased runs; fall back to a cheap model
+  (via OpenRouter) for high-volume, low-stakes, or anonymous public traffic. Anthropic,
+  OpenAI, Grok, and most gateways expose OpenAI-compatible endpoints, so the abstraction
+  is a base-URL + model-id swap behind one interface. Decide the exact routing policy
+  (which traffic gets which model) when wiring guardrails + the public rollout.
 - **Agent runtime:** the SDK **Tool Runner** (`client.beta.messages.tool_runner`) drives
   the perceive→reason→act→observe loop. Keeps code readable and framework-light
   (matches the house philosophy of teaching concepts with minimal code); no LangGraph/
@@ -67,14 +76,26 @@ Each agent = a system prompt + a tool set, driven by a shared lightweight agent 
 
 - **React + Vite + Tailwind** SPA. One panel per agent; live token streaming; shows the
   agent's steps/tool-calls and a link to the Langfuse trace.
-- Deployed on **Vercel**.
+- Served from **GitHub Pages** (Option A, locked 2026-09-24), consistent with the TechNaom
+  course sites. Build the Vite app and publish the static bundle to Pages via a GitHub
+  Actions workflow on push to `main`.
 
-## Deployment (cloud)
+## Deployment — Option A (locked 2026-09-24)
 
-- Frontend → Vercel (free tier).
-- Backend (FastAPI) → Fly.io or Render (small paid instance acceptable).
-- Vector DB → ChromaDB persisted to a volume on the backend host.
-- Langfuse → cloud free tier initially; self-host later if needed.
+**Frontend on GitHub Pages, backend on a cloud host.** The React UI is a static bundle
+served from GitHub Pages (like the course content); the agents run on a real backend that
+holds the Anthropic key. This is required because GitHub Pages serves static files only —
+an API key can never live in the browser bundle, so the agent loop and all LLM calls must
+be server-side.
+
+- **Frontend** → GitHub Pages (static Vite build, published by GitHub Actions).
+- **Backend (FastAPI)** → Fly.io or Render (small paid/free-tier instance). Holds all
+  secrets; exposes HTTPS agent endpoints. **CORS** configured to allow the Pages origin.
+- **Vector DB** → ChromaDB persisted to a volume on the backend host.
+- **Langfuse** → cloud free tier initially; self-host later if needed.
+
+> Rejected: a static-only "all on GitHub Pages" deploy — it would require shipping the
+> API key in client JS (publicly stealable, bill-runaway risk). Not viable.
 
 ## Guardrails, cost & abuse control (required before public)
 

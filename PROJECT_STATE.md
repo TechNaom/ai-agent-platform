@@ -17,7 +17,13 @@ observability, deployment).
 - **RAG:** ChromaDB + hybrid retrieval + rerank (reuse `enterprise-knowledge-assistant`
   engine — do NOT duplicate it).
 - **Observability & eval-scoring:** Langfuse.
-- **Frontend:** React + Vite + Tailwind on Vercel. **Backend deploy:** Fly.io / Render.
+- **Frontend:** React + Vite + Tailwind on **GitHub Pages** (Option A, locked 2026-09-24 —
+  static bundle via GitHub Actions, like the course sites). **Backend deploy:** Fly.io /
+  Render (holds the API key; CORS to the Pages origin). Static-only-Pages rejected (would
+  leak the key).
+- **Low-cost model option:** provider-abstracted model layer can route cheap public traffic
+  to low-cost models via **OpenRouter** (Grok/Llama/Mistral/etc.) while keeping Claude as
+  the quality default — a cost/abuse lever for the public demo (policy TBD at guardrails).
 - **Data:** real public datasets (defensible eval numbers).
 - **Guardrails:** per-IP rate limits + hard monthly spend cap. **Rollout:** password-gated
   private beta → public. **Visibility:** GitHub repo is PUBLIC from day one.
