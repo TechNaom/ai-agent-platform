@@ -6,7 +6,8 @@ and observability**. This is the flagship portfolio project for demonstrating re
 AI-product engineering: agent design, RAG, evals, observability, cost/latency control,
 and public deployment.
 
-> **Status:** Foundation / scaffold. See [`PROJECT_STATE.md`](PROJECT_STATE.md) for the
+> **Status:** Sprint 0 (enterprise foundation). Two products: the interactive agent
+> platform and the multi-channel **content engine** (`docs/content-engine/`). See [`PROJECT_STATE.md`](PROJECT_STATE.md) for the
 > live build status and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the design.
 
 ## What it does
@@ -29,12 +30,12 @@ Cutting across all four:
 | Layer | Choice |
 |---|---|
 | Backend | Python + FastAPI (async, streaming) |
-| LLM | Anthropic Claude — `claude-sonnet-5` (agents), `claude-haiku-4-5` (cheap/fast paths), `claude-opus-4-8` (hardest); provider-abstracted |
+| LLM | Provider-neutral router (ADR-0003): Claude (`claude-sonnet-5-5`, `claude-opus-5-5`, `claude-haiku-4-5`) for quality-critical work; low-cost models (Grok, Groq-hosted open models via OpenRouter) where evals allow |
 | Agent loop | Anthropic SDK Tool Runner (lightweight, no heavy framework) |
 | RAG | ChromaDB (persistent) + hybrid retrieval + re-ranking |
 | Observability & eval scoring | Langfuse (self-hosted or cloud free tier) |
 | Frontend | React + Vite + Tailwind |
-| Deploy | Frontend: Vercel · Backend: Fly.io / Render (cloud) |
+| Deploy | Frontend: GitHub Pages · Backend + worker: Fly.io (ADR-0004) · DB: Neon Postgres + pgvector |
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full rationale, and
 [`AI_HANDOFF.md`](AI_HANDOFF.md) for cold-pickup context.
