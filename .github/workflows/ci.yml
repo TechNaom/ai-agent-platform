@@ -32,7 +32,7 @@ jobs:
       - name: Lint
         run: ruff check .
       - name: Format
-        run: ruff format --check .
+        run: ruff format --diff .
       - name: Type check
         run: mypy
       - name: Tests

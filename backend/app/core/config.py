@@ -22,6 +22,12 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     database_url: SecretStr | None = None
 
+    # Worker (ADR-0004)
+    worker_tick_seconds: float = 60.0
+    worker_batch_size: int = 5
+    job_lease_seconds: int = 900
+    job_backoff_base_seconds: int = 30
+
 
 @lru_cache
 def get_settings() -> Settings:

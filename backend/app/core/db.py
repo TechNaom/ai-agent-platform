@@ -1,9 +1,14 @@
-"""Async database engine. The schema itself arrives with the migrations issue (#3)."""
+"""Async database engine and session factory."""
 
 from functools import lru_cache
 
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from app.core.config import get_settings
 
@@ -14,6 +19,13 @@ def get_engine() -> AsyncEngine | None:
     if url is None:
         return None
     return create_async_engine(url.get_secret_value(), pool_pre_ping=True)
+
+
+def get_sessionmaker() -> async_sessionmaker[AsyncSession]:
+    engine = get_engine()
+    if engine is None:
+        raise RuntimeError("DATABASE_URL is not set")
+    return async_sessionmaker(engine, expire_on_commit=False)
 
 
 async def ping_database() -> bool:
