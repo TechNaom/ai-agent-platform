@@ -50,13 +50,14 @@ class AnthropicProvider:
             for t in spec.tools
         ]
         try:
+            # `temperature` is intentionally omitted: current Claude models use adaptive
+            # thinking, not manual sampling temperature (see docs/ARCHITECTURE.md).
             resp = await self._client.messages.create(
                 model=model,
                 system=spec.system or "",
                 messages=_to_anthropic_messages(spec),
                 tools=tools,
                 max_tokens=spec.max_tokens,
-                temperature=spec.temperature,
             )
         except RateLimitError as exc:
             raise ProviderError(self.name, model, str(exc), retryable=True) from exc

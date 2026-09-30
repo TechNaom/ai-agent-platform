@@ -3,9 +3,10 @@
 """
 
 import json
-from typing import Any
+from typing import Any, cast
 
 from openai import APIStatusError, AsyncOpenAI, RateLimitError
+from openai.types.chat import ChatCompletionMessageFunctionToolCall
 
 from app.content_engine.models.errors import ProviderError
 from app.content_engine.models.types import CallSpec, CompletionResult, Role, ToolCall
@@ -58,8 +59,8 @@ class OpenAICompatProvider:
         try:
             resp = await self._client.chat.completions.create(
                 model=model,
-                messages=_to_openai_messages(spec),
-                tools=tools or None,
+                messages=cast(Any, _to_openai_messages(spec)),
+                tools=cast(Any, tools) if tools else None,
                 max_tokens=spec.max_tokens,
                 temperature=spec.temperature,
             )
@@ -70,9 +71,12 @@ class OpenAICompatProvider:
             raise ProviderError(self.name, model, str(exc), retryable=retryable) from exc
 
         choice = resp.choices[0]
+        # Only function-tool calls are ever requested (see the `tools` payload above);
+        # narrow the union so mypy (and we) can rely on `.function` existing.
         tool_calls = tuple(
             ToolCall(id=tc.id, name=tc.function.name, arguments=json.loads(tc.function.arguments))
             for tc in (choice.message.tool_calls or [])
+            if isinstance(tc, ChatCompletionMessageFunctionToolCall)
         )
         usage = resp.usage
         return CompletionResult(
