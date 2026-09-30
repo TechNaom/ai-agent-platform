@@ -60,7 +60,7 @@ class OpenAICompatProvider:
             resp = await self._client.chat.completions.create(
                 model=model,
                 messages=cast(Any, _to_openai_messages(spec)),
-                tools=cast(Any, tools) if tools else None,
+                tools=cast(Any, tools or None),
                 max_tokens=spec.max_tokens,
                 temperature=spec.temperature,
             )

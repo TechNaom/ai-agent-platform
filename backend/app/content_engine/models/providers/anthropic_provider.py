@@ -1,6 +1,6 @@
 """Anthropic transport. Converts the provider-neutral CallSpec to/from the Claude API."""
 
-from typing import Any
+from typing import Any, cast
 
 from anthropic import APIStatusError, AsyncAnthropic, RateLimitError
 
@@ -55,8 +55,8 @@ class AnthropicProvider:
             resp = await self._client.messages.create(
                 model=model,
                 system=spec.system or "",
-                messages=_to_anthropic_messages(spec),
-                tools=tools,
+                messages=cast(Any, _to_anthropic_messages(spec)),
+                tools=cast(Any, tools),
                 max_tokens=spec.max_tokens,
             )
         except RateLimitError as exc:
