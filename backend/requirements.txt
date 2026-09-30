@@ -1,9 +1,8 @@
-# Pinned versions added when the backend skeleton lands.
-fastapi
-uvicorn[standard]
-anthropic
-langfuse
-chromadb
-slowapi
-pydantic-settings
-python-dotenv
+# Runtime dependencies. Pinned to minor versions; Dependabot proposes upgrades.
+# Each later dependency (anthropic, langfuse, pgvector, ...) is added by the issue that needs it.
+fastapi==0.142.*
+uvicorn[standard]==0.54.*
+pydantic==2.13.*
+pydantic-settings==2.15.*
+sqlalchemy[asyncio]==2.1.*
+asyncpg==0.31.*

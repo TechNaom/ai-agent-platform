@@ -2,4 +2,6 @@
 ruff==0.16.*
 mypy==2.3.*
 pytest==9.1.*
+pytest-asyncio==1.4.*
+httpx==0.28.*
 pre-commit==4.6.*
