@@ -35,7 +35,7 @@ class ModelRouter:
         retry_attempts: int = 3,
     ) -> None:
         self._providers = providers
-        self._routes = routes or DEFAULT_ROUTES
+        self._routes = routes if routes is not None else DEFAULT_ROUTES
         self._budget = budget or NullBudgetGuard()
         self._retry_attempts = retry_attempts
 

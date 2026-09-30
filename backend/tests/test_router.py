@@ -19,7 +19,7 @@ from app.content_engine.models.routes import AgentName
 from app.content_engine.models.types import CallSpec, Message, ModelChoice, Role
 
 FAST = ModelChoice("fake", "fast-model")
-STRONG = ModelChoice("fake", "strong-model")
+STRONG = ModelChoice("fake2", "strong-model")
 PRICES["fast-model"] = PRICES["claude-haiku-4-5"]
 PRICES["strong-model"] = PRICES["claude-sonnet-5-5"]
 
