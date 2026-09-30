@@ -6,7 +6,7 @@ Plan: docs/content-engine/ARCHITECTURE_PLAN.md §5 · Memory: docs/content-engin
 from datetime import datetime
 from decimal import Decimal
 from enum import StrEnum
-from typing import Any
+from typing import Any, ClassVar
 
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
@@ -33,7 +33,7 @@ EMBEDDING_DIM = 1024
 
 
 class Base(DeclarativeBase):
-    type_annotation_map = {dict[str, Any]: JSONB, list[Any]: JSONB}
+    type_annotation_map: ClassVar[dict[Any, Any]] = {dict[str, Any]: JSONB, list[Any]: JSONB}
 
 
 def enum_col(enum: type[StrEnum]) -> Enum:
