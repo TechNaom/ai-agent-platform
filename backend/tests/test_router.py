@@ -42,8 +42,12 @@ class FakeProvider:
         from app.content_engine.models.types import CompletionResult
 
         return CompletionResult(
-            text=self.text, tool_calls=(), tokens_in=100, tokens_out=50,
-            stop_reason="end_turn", raw_model=model,
+            text=self.text,
+            tool_calls=(),
+            tokens_in=100,
+            tokens_out=50,
+            stop_reason="end_turn",
+            raw_model=model,
         )
 
 
