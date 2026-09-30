@@ -39,6 +39,10 @@ Then read `docs/adr/` (decisions) and `PROJECT_STATE.md` (status + next task).
 
 ## What NOT to change / duplicate
 
+- **Don't run anything on the owner's machine** (no local Docker, DBs or services). Test in CI,
+  develop in Codespaces, deploy to cloud. Don't import cloud-vendor SDKs in `backend/app/`;
+  platform specifics go in `deploy/<target>/` (ADR-0008).
+
 - Don't give agents private memory stores (ADR-0002).
 - Don't make the scheduler an LLM or move scheduling to external cron (ADR-0004, ADR-0007).
 - Don't re-implement the RAG engine: port it from `TechNaom/enterprise-knowledge-assistant`.

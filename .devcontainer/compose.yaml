@@ -1,0 +1,15 @@
+# Cloud dev environment (GitHub Codespaces). Runs on GitHub's machines, not locally.
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/python:3.12
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:dev@db:5432/aap
+      ENVIRONMENT: local
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: aap
