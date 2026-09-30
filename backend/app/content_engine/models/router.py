@@ -15,7 +15,7 @@ from app.content_engine.models.budget import BudgetGuard, NullBudgetGuard
 from app.content_engine.models.errors import AllProvidersFailed, ProviderError
 from app.content_engine.models.pricing import cost_usd
 from app.content_engine.models.providers.base import Provider
-from app.content_engine.models.routes import AgentName, DEFAULT_ROUTES
+from app.content_engine.models.routes import DEFAULT_ROUTES, AgentName
 from app.content_engine.models.types import CallSpec, CompletionResult, ModelChoice, RoutedResult
 
 logger = logging.getLogger(__name__)
