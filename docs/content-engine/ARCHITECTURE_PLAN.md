@@ -254,7 +254,12 @@ Every channel is a **plugin** implementing
 One channel failing never blocks the others (outbox per channel, circuit breaker per channel).
 Adding a channel means adding a plugin plus a config entry. The core doesn't change.
 
-**Channel reality check.** Everything here is to be verified in the Phase 0 spike;
+**Channel reality check. Superseded in detail by `CHANNEL_SPIKE.md` (2026-09-30):**
+LinkedIn document posts and personal-profile analytics are documented; X is
+pay-per-use, so posts are link-free by default; WhatsApp Channels have no official API;
+carousels use one master render at 4:5.
+
+ Everything here is to be verified in the Phase 0 spike;
 API access and pricing on these platforms change often.
 
 | Channel | How it publishes | Carousel becomes | Known constraints | Brand value |
