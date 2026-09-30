@@ -119,8 +119,8 @@ async def test_worker_tick_success_failure_unknown(
     result = await Worker(sessions, reg, _settings(), worker_id="t").tick()
     assert result.succeeded == [ok_id] and seen == [{"n": 1}]
     assert (await _state(sessions, ok_id or 0)).state == JobState.SUCCEEDED
-    bad = await _state(sessions, bad_id or 0)
-    assert bad.state == JobState.QUEUED and "source down" in (bad.last_error or "")
+    failed = await _state(sessions, bad_id or 0)
+    assert failed.state == JobState.QUEUED and "source down" in (failed.last_error or "")
     assert (await _state(sessions, unknown_id or 0)).state == JobState.DEAD
 
 
