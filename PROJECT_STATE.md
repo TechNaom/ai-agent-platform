@@ -27,6 +27,8 @@ run like a software-company codebase. Two products share one kernel:
 - ADR-0005: SHADOW → VETO → AUTONOMOUS, plus a kill switch.
 - ADR-0006: public code repo; private `TechNaom/technaom-content-vault` for content and backups.
 - ADR-0007: deterministic orchestrator; 10 LLM agents for judgment only.
+- ADR-0008: platform-agnostic (one container + plain Postgres/pgvector, vendor code only in
+  `deploy/<target>/`); **nothing runs on the owner's machine** (CI + Codespaces + cloud).
 - Owner defaults (2026-09-30): $75/month LLM cap; posts at 08:30 and 18:30 IST.
 - **Crash-safety mandate:** everything is pushed to GitHub continuously.
 
@@ -34,6 +36,7 @@ run like a software-company codebase. Two products share one kernel:
 
 - [x] Foundation docs, repo skeleton, public repo (2026-09-24).
 - [x] Content engine architecture plan approved (2026-09-30).
+- [x] #1 channel API spike (`docs/content-engine/CHANNEL_SPIKE.md`); #2 backend skeleton.
 - [x] Sprint 0: CONTRIBUTING, SECURITY, CI (ruff, mypy, pytest, gitleaks), Dependabot,
       CODEOWNERS, issue/PR templates, pre-commit, 7 ADRs, agent memory design.
 
