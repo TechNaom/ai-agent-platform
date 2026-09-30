@@ -1,5 +1,5 @@
 # Development + CI tooling. Runtime deps live in requirements.txt.
-ruff==0.13.*
-mypy==1.18.*
-pytest==8.4.*
-pre-commit==4.3.*
+ruff==0.16.*
+mypy==2.3.*
+pytest==9.1.*
+pre-commit==4.6.*
