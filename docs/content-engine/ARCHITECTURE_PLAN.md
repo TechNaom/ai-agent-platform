@@ -1,7 +1,10 @@
 # Content Engine (multi-channel): Architecture Plan
 
-Status: **PROPOSAL, not approved. No code has been written.**
-Date: 2026-09-28
+Status: **APPROVED 2026-09-30** with owner defaults (§14): inside `ai-agent-platform`, content engine first,
+SHADOW → VETO → AUTONOMOUS, cheap + premium model routing (ADR-0003), $75/month LLM cap,
+posts at 08:30 and 18:30 IST, deploy on Fly.io with an in-app scheduler (ADR-0004).
+Agent memory design: `AGENT_MEMORY.md`. Decisions: `docs/adr/`.
+Date: 2026-09-28 (plan) · 2026-09-30 (approved)
 Source: the "Autonomous LinkedIn Content Agent" PRD (39 sections), refined below.
 
 This plan turns the PRD into a buildable design inside `ai-agent-platform`. It keeps the

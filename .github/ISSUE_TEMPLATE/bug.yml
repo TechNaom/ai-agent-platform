@@ -1,0 +1,21 @@
+name: Bug
+description: Something is broken
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened vs what was expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce / Langfuse trace link
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: ["sev1: wrong content published / secret exposed", "sev2: publishing stopped", "sev3: degraded", "sev4: minor"]
+    validations:
+      required: true

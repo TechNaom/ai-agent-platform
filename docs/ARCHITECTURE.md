@@ -2,6 +2,11 @@
 
 This document is the authoritative design + rationale. Update it as decisions change.
 
+> **2026-09-30:** model IDs and pricing below are superseded by ADR-0003 (provider-neutral
+> routing) and the current lineup: `claude-sonnet-5-5` ($2/$10), `claude-opus-5-5` ($4/$20),
+> `claude-fable-5-1` ($10/$50), `claude-haiku-4-5` ($1/$5). The content engine is the
+> platform's fifth product: see `docs/content-engine/`.
+
 ## Goal & positioning
 
 A **production multi-agent + multi-RAG platform** that is publicly playable, with

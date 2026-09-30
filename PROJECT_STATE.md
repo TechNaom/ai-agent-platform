@@ -1,68 +1,66 @@
 # PROJECT_STATE
 
-Last updated: 2026-09-24 (foundation / scaffold pushed public for crash-safety).
+Last updated: 2026-09-30 (Sprint 0: enterprise foundation).
 
 ## Objective
 
-Build a production-grade, publicly playable **multi-agent + multi-RAG platform** with
-first-class **evaluation** and **observability**, deployed to the cloud with guardrails.
-Serves as the flagship portfolio piece for AI-product engineering (evals, RAG, agents,
-observability, deployment).
+A production-grade AI platform with first-class **evaluation** and **observability**,
+run like a software-company codebase. Two products share one kernel:
 
-## Architecture decisions (see docs/ARCHITECTURE.md for full rationale)
+1. **Content engine (building first).** An autonomous, multi-channel, AI-centric content
+   system whose purpose is building the **Manohar Papasani** brand (GenAI Solution
+   Architect & AI Systems Builder). It turns the whole TechNaom GitHub account into
+   500–1,000+ posts and carousels, adds a ranked AI-news stream, and publishes to
+   LinkedIn and other channels in waves. Plan: `docs/content-engine/ARCHITECTURE_PLAN.md`.
+2. **Interactive agent platform (after).** Four public demo agents (Research, RAG Q&A,
+   Code review, Data analysis) with a React UI. Design: `docs/ARCHITECTURE.md`.
 
-- **Backend:** FastAPI (async, streaming). **LLM:** Anthropic Claude — `claude-sonnet-5`
-  for agents, `claude-haiku-4-5` for cheap paths, `claude-opus-4-8` for hardest;
-  provider-abstracted. **Agent loop:** Anthropic SDK Tool Runner (no heavy framework).
-- **RAG:** ChromaDB + hybrid retrieval + rerank (reuse `enterprise-knowledge-assistant`
-  engine — do NOT duplicate it).
-- **Observability & eval-scoring:** Langfuse.
-- **Frontend:** React + Vite + Tailwind on **GitHub Pages** (Option A, locked 2026-09-24 —
-  static bundle via GitHub Actions, like the course sites). **Backend deploy:** Fly.io /
-  Render (holds the API key; CORS to the Pages origin). Static-only-Pages rejected (would
-  leak the key).
-- **Low-cost model option:** provider-abstracted model layer can route cheap public traffic
-  to low-cost models via **OpenRouter** (Grok/Llama/Mistral/etc.) while keeping Claude as
-  the quality default — a cost/abuse lever for the public demo (policy TBD at guardrails).
-- **Data:** real public datasets (defensible eval numbers).
-- **Guardrails:** per-IP rate limits + hard monthly spend cap. **Rollout:** password-gated
-  private beta → public. **Visibility:** GitHub repo is PUBLIC from day one.
-- **Crash-safety mandate (user, 2026-09-24):** push to GitHub continuously — commit +
-  push after every meaningful chunk, never hold work locally.
+## Architecture decisions (see `docs/adr/`)
 
-## The four agents
-
-1. Research/answer (web_search) · 2. RAG Q&A (ChromaDB) · 3. Code review · 4. Data analysis (code_execution).
+- ADR-0002: one shared agent memory, Postgres + pgvector (Neon). Agents are stateless;
+  context builders load memory (`docs/content-engine/AGENT_MEMORY.md`).
+- ADR-0003: provider-neutral model routing. Claude for Writer, Fact-Checker, Judge and
+  Visual QA; low-cost models (Grok, Groq/OpenRouter) for bulk work. Evals pick the
+  cheapest model that passes.
+- ADR-0004: Fly.io (`api` + `worker`), DB-backed in-app scheduler, GitHub Actions as
+  watchdog and backup runner. Frontend on GitHub Pages.
+- ADR-0005: SHADOW → VETO → AUTONOMOUS, plus a kill switch.
+- ADR-0006: public code repo; private `TechNaom/technaom-content-vault` for content and backups.
+- ADR-0007: deterministic orchestrator; 10 LLM agents for judgment only.
+- Owner defaults (2026-09-30): $75/month LLM cap; posts at 08:30 and 18:30 IST.
+- **Crash-safety mandate:** everything is pushed to GitHub continuously.
 
 ## Completed
 
-- [x] Repo scaffolded on D drive (`/mnt/d/projects/ai-agent-platform`, `core.filemode false`).
-- [x] Architecture + discovery docs, README, PROJECT_STATE, AI_HANDOFF.
-- [x] Directory skeleton for backend/frontend/evals/obs/rag.
-- [x] Public GitHub repo created + pushed (crash-safety baseline).
+- [x] Foundation docs, repo skeleton, public repo (2026-09-24).
+- [x] Content engine architecture plan approved (2026-09-30).
+- [x] Sprint 0: CONTRIBUTING, SECURITY, CI (ruff, mypy, pytest, gitleaks), Dependabot,
+      CODEOWNERS, issue/PR templates, pre-commit, 7 ADRs, agent memory design.
 
-## Pending (build order)
+## Sprint plan (GitHub milestones)
 
-1. **Backend skeleton** — FastAPI app, health check, model-selection layer, Anthropic client, streaming SSE endpoint.
-2. **Agent 1 (Research)** — Tool Runner + web_search, streaming, Langfuse tracing. First end-to-end vertical slice.
-3. **Observability wiring** — Langfuse traces on every run; trace ID in responses.
-4. **Guardrails** — rate limiting + spend cap middleware (before any public exposure).
-5. **Agent 2 (RAG Q&A)** — port the enterprise-knowledge-assistant retrieval engine; ingestion + corpus.
-6. **Agent 3 (Code review)** and **Agent 4 (Data analysis)**.
-7. **Eval harness** — offline CI-gated suite per agent on real public datasets; wire into CI.
-8. **Frontend** — React panels per agent, live streaming, trace links.
-9. **Deploy** — backend to Fly.io/Render, frontend to Vercel; private beta (password gate).
-10. **Public launch** — flip the access toggle after cost/abuse validation.
+| Milestone | Scope |
+|---|---|
+| Sprint 0 | Enterprise foundation (this sprint) |
+| Sprint 1 | Foundation: config, DB schema + migrations, job queue + worker, model router, Langfuse, GitHub scanner, Docker, Fly deploy, watchdog + backups |
+| Sprint 2 | GitHub content engine: knowledge map, strategist, writer, dedup, judge, fact-check, evals, SHADOW digest |
+| Sprint 3 | Carousel pipeline |
+| Sprint 4 | News engine |
+| Sprint 5 | Editorial engine |
+| Sprint 6 | Publishing wave 1: LinkedIn, blog, Slack, Telegram, Discord |
+| Later | Waves 2–4 (X, Bluesky, Dev.to · Meta · WhatsApp), learning loop, the 4 demo agents |
 
 ## Next Recommended Task
 
-Build the **backend skeleton + Research agent vertical slice** (items 1–3): a running
-FastAPI service with one working, traced, streaming agent, so there is an end-to-end path
-to demo before fanning out to the other three agents. Requires an `ANTHROPIC_API_KEY` and
-a Langfuse project (cloud free tier is fine to start).
+**Sprint 1, first issue:** backend skeleton (settings, FastAPI `api` with `/health`,
+Postgres schema + Alembic migrations, job table + worker tick loop). Needs from the owner:
+a Neon Postgres URL, an Anthropic key, a Groq key and Langfuse keys, set as secrets
+(never pasted in chat).
 
 ## Known open questions / risks
 
-- Backend host final choice (Fly.io vs Render) — decide when first deploying.
-- Real eval dataset selection per agent — pick freely-licensed sources at eval-harness time.
-- Monthly spend cap value — set with the user before public launch.
+- LinkedIn API: document (carousel) posts and member analytics availability for personal
+  profiles are unverified. This is Phase 0 spike work in Sprint 1.
+- Meta app review (Facebook, Instagram, Threads) can take weeks. Apply early.
+- Exact low-cost model IDs are chosen by evals at implementation time.
+- Session model: build work should run on Sonnet (owner preference).
