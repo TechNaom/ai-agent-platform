@@ -14,7 +14,11 @@ humans and to AI coding assistants.
 4. **Open a pull request** using the template and link the issue (`Closes #12`).
 5. **CI must pass**: lint, format, type check, tests, secrets scan and (once they exist)
    evals. `main` is protected, so there are no direct pushes and no merging on red.
-6. **Squash-merge.** The PR title becomes the commit on `main`.
+6. **Squash-merge.** The PR title becomes the commit on `main`. No approving review is
+   required: AI assistants may merge their own PRs once CI is green (owner authorization,
+   2026-09-30). The exceptions need the owner first: going live with publishing (or
+   promoting SHADOW → VETO → AUTONOMOUS), anything that spends money, irreversible
+   operations, and secrets.
 7. **Architectural decisions get an ADR** in `docs/adr/`.
 8. **Keep `PROJECT_STATE.md` and `AI_HANDOFF.md` current** at the end of each work session.
 
