@@ -21,6 +21,20 @@ brand risk is concentrated in writing, fact-checking and judging.
 - Web search goes through Tavily (provider-neutral), not a vendor server tool.
 - Model IDs are verified against vendor docs at implementation time (they change monthly).
 
+## Candidate cheap-tier providers (not yet evaluated)
+
+Noted here so they aren't lost, not yet run through the eval harness:
+
+- **z.ai GLM Coding Plan** (flagged 2026-10-01, via unsolicited vendor email referencing
+  this ADR's own issue #5). Flat $18/month (Lite tier) instead of metered tokens, points-based
+  weekly quota, defaults to GLM-5.3 / GLM-5.3-Flash (open-weight, MIT). Compatible with any
+  OpenAI-compatible client, same mechanism already planned for OpenRouter/Groq. Flat-rate
+  billing is attractive for bulk/high-volume agents (News triage, Channel Adapter) where
+  token-metered cost is the whole problem — but GLM models are meaningfully weaker than Claude
+  on complex tool-calling/multi-step reasoning, so this is a News-triage/bulk-work candidate
+  only, never a Writer/Fact-Checker/Judge substitute. Evaluate like any other candidate: run it
+  through the relevant agent's eval set before adopting, per this ADR's "evals decide" rule.
+
 ## Consequences
 - Cost control without betting the brand on the cheapest model.
 - The router is itself a portfolio artefact ("cut cost X% at equal eval scores").
